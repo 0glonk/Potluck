@@ -1,0 +1,30 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Potluck | Password Reset Success</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Password reset confirmation" />
+    <link rel="icon" href="{% static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/potluck.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/register_email.css' %}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+
+        <div class="success-container">
+            <h1>🔐 Password Reset Successful</h1>
+            <p>Your password has been updated successfully. You can now log in with your new password.</p>
+            <a href="{% url 'login' %}" class="btn-custom">Back to Login</a>
+        </div>
+
+        {% include 'partials/footer.html' %}
+    </div>
+</body>
+
+</html>

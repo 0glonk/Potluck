@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+<head>
+    {% load static %}
+    <title>Potluck | Test</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="testing page" />
+    <meta name="description" content="testing page" />
+    <link rel="icon" href="{%static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{%static 'css/cropper.min.css' %}" />
+    <script src="{%static 'js/cropper.min.js' %}"></script>
+    <script src="{%static 'js/imageCrop.js' %}"></script>
+</head>
+
+<body>
+    <main>
+        <h1>Test Header</h1>
+        <form action="{% url 'test' %}" method="POST" enctype="multipart/form-data">
+            {% csrf_token %}
+            {{ form.imageURL.as_hidden }}
+            <div>
+                <label for="imageInput">Image:</label>
+                <input id="imageInput" type="file" name="image" />
+            </div>
+            <button type="submit">Submit</button>
+        </form>
+
+        <div>
+            <h2>Image Cropper</h2>
+            <div style="width:100%; min-width: 300px; min-height: 300px; max-width: 500px; max-height: 500px;">
+                <img src="" id="croppedImage" alt="Cropped Image" />
+            </div>
+            <div>
+                <button id="cropButton">Crop Image</button>
+            </div>
+            {% for imageURL in imageURLs %}
+                <img id="uploaded test" src="{{ imageURL.imageURL}}" />
+            {% endfor %}
+        </div>
+    </main>
+</body>

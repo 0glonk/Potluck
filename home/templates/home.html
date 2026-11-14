@@ -1,0 +1,142 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+  {% load static %}
+  <title>Potluck | Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="Share and discover new recipes with Potluck" />
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link rel="icon" href="{%static 'images/pot.ico' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/home.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script src="{%static 'js/swiper.js' %}" defer></script>
+  <script src="{%static 'js/potluck.js' %}" defer></script>
+  <script src="{%static 'js/interact.js' %}" defer></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    {% include 'partials/nav.html' %}
+    <main>
+
+      {# Recipe Carousel #}
+      <div class="swiper-container">
+        <div class="swiper-button-prev"></div>
+        <div class="swiper">
+          <div class="swiper-wrapper">
+            {% for recipe in recipeSlides %}
+            <div class="swiper-slide">
+              <a href="{% url 'recipe_detail' recipe.id %}">
+                <img src="{{ recipe.image }}" alt="{{ recipe.title }}" />
+                <span>{{ recipe.title }}</span>
+              </a>
+            </div>
+            {% empty %}
+            {% endfor %}
+          </div>
+          <div class="swiper-pagination"></div>
+        </div>
+        <div class="swiper-button-next"></div>
+      </div>
+
+
+      <div id="homeTitle" class="center">
+        <h1>Your cooking community, connected</h1>
+        <p>Discover your next culinary adventure with Potluck</p>
+
+      </div>
+
+      <div class="searchContainer">
+        <form method="get" action="{% url 'search_all' %}" class="d-flex" role="search">
+          <input name="q" class="form-control me-2 shadow-none" type="search" placeholder="Search..."
+            aria-label="Search">
+          <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+
+      </div>
+
+      {# Recipe Cards #}
+
+      <div class="album py-5">
+        <div class="container" style="max-width: 90vw;">
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-3">
+            {% for recipe_info in recipes %}
+            <div class="col">
+              <div class="card shadow-sm h-100 d-flex flex-column"><a href="{% url 'recipe_detail' recipe_info.recipe.id %}">
+                <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                  src="{{ recipe_info.recipe.image }}" alt="{{ recipe_info.recipe.title }}" role="img"
+                  preserveAspectRatio="xMidYMid slice" focusable="false">
+              </a>
+
+                <!-- Make card-body grow to push buttons down -->
+                <div class="card-body d-flex flex-column">
+                  <h5 class="card-title">{{ recipe_info.recipe.title }}</h5>
+
+                  <div class="star-rating read-only">
+                    <span style="color:white">Difficulty: </span>
+                    {% for i in "12345"|make_list %}
+                    <span class="star{% if i|add:0 <= recipe_info.recipe.difficulty|add:0 %} filled{% endif %}">★</span>
+                    {% endfor %}
+                  </div>
+
+                  <p class="card-text">{{ recipe_info.recipe.time }} Minutes</p>
+
+                  <ul class="list-inline">
+                    {% for tag in recipe_info.tags|slice:":4" %}
+                    <li class="list-inline-item badge">{{ tag.tagName }}</li>
+                    {% endfor %}
+                  </ul>
+
+                  <!-- Spacer to push buttons down -->
+                  <div class="mt-auto">
+                    <div class="d-flex justify-content-end align-items-center">
+                      <div class="btn-group">
+                        {% if user.is_authenticated %}
+                        {% with like_image=recipe_info.like_status|yesno:"Active," %}
+                        <button type="button" onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'like')"
+                          class="btn btn-sm btn-outline-secondary likeButton" id="likeButton">
+                          <img src="{% static 'images/like' %}{{ like_image }}.ico" alt="Like" width="20" height="20" />
+                        </button>
+                        {% endwith %}
+
+                        {% with bookmark_image=recipe_info.bookmark_status|yesno:"Active," %}
+                        <button type="button"
+                          onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'bookmark')"
+                          class="btn btn-sm btn-outline-secondary bookmarkButton" id="bookmarkButton">
+                          <img src="{% static 'images/bookmark' %}{{ bookmark_image }}.ico" alt="Bookmark" width="20"
+                            height="20" />
+                        </button>
+                        {% endwith %}
+                        {% else %}
+                        <div>
+                          <a href="{% url 'login' %}">Log in</a> to like or bookmark this recipe.
+                        </div>
+                        {% endif %}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+            {% empty %}
+            <p>Error loading recipes. Please Refresh</p>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </main>
+    {% include 'partials/footer.html' %}
+  </div>
+</body>
+
+</html>

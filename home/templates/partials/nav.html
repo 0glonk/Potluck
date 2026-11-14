@@ -1,0 +1,56 @@
+{% load static %}
+<nav class="navbar sticky-top navbar-expand-lg">
+    <div id="nav-backdrop" class="nav-backdrop"></div>
+    <div id="navBar" class="container-fluid">
+        <a class="navbar-brand" href="/">
+            <img id="navLogo" src="{%static 'images/potluckTextAlt.png' %}" alt="Potluck Logo" width="130" height="65">
+        </a>
+        <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                <li class="nav-item">
+                    <a class="nav-link active" aria-current="page" href="/">Home</a>
+                </li>
+                {% if user.is_authenticated %}
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/user_profile/">Profile</a>
+                </li>
+                {% endif %}
+                <li class="nav-item dropdown">
+                    <a class="nav-link dropdown-toggle" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                        Account
+                    </a>
+                    <ul class="dropdown-menu">
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item" href="/account/recipe_edit">New Recipe</a></li>
+                        {% endif %}
+                        <li>
+                            <hr class="dropdown-divider">
+                        </li>
+                        {% if user.is_authenticated %}
+                        <li><a class="dropdown-item logoutLink" href="#">Logout</a></li>
+                        <form id="logout-form" method="POST" action="{% url 'logout' %}" style="display: none;">
+                            {% csrf_token %}
+                        </form>
+                        {% else %}
+                        <li><a class="dropdown-item" href="/login">Login</a></li>
+                        {% endif %}
+                    </ul>          
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/account/premium">Premium</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="/about">About</a>
+                </li>
+            </ul>
+            <form method="get" action="{% url 'search_all' %}" class="d-flex" role="search" id="navSearch">
+                <input name="q" class="form-control me-2 shadow-none" type="search" placeholder="Search" aria-label="Search">
+                <button id="navSearchBtn" class="btn btn-outline-dark" type="submit">Search</button>
+            </form>
+        </div>
+    </div>
+</nav>

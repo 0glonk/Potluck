@@ -1,0 +1,186 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <title>Potluck | About</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="Share and discover new recipes with Potluck" />
+  <link rel="icon" href="" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script src="{%static 'js/swiper.js' %}" defer></script>
+  <style>
+    :root {
+      --red-orange: #FF5C4D;
+      --orange: #FF9636;
+      --yellow: #FFCD58;
+      --green: #DAD870;
+    }
+
+    body {
+      height: 100vh;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background-color: #f4f4f4;
+    }
+
+    body,
+    .album {
+      background-image: linear-gradient(to bottom right, var(--green), #e1e08d);
+    }
+
+    .small-page {
+      position: relative;
+      width: 60%;
+      max-width: 400px;
+      padding: 20px;
+      background-color: white;
+      border-radius: 8px;
+      box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .header {
+      font-size: 1.5rem;
+      font-weight: bold;
+      margin-bottom: 20px;
+    }
+
+    .content {
+      font-size: 1rem;
+      margin-bottom: 20px;
+    }
+
+    .cta {
+      text-align: center;
+    }
+
+    .cta button {
+      background-color: var(--orange);
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+
+    .cta button:hover {
+      background-color: var(--yellow);
+    }
+
+    .settings_button {
+      background-color: #FF9636;
+      border-radius: 1em;
+      padding: 0.8em;
+      margin: 1em;
+      width: 11em;
+    }
+
+    .buttons {
+      text-align: center;
+    }
+
+    #close_button {
+      margin-top: 1em;
+    }
+
+    fieldset {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      padding-left: 0;
+      padding-bottom: 3em;
+    }
+
+    label {
+      margin: 10px 0;
+      margin-left: 10em;
+    }
+
+    input[type="radio"] {
+      margin-right: 1em;
+      margin-left: 10em;
+    }
+
+    form {
+      margin-bottom: 1em;
+    }
+
+    @media (max-width: 600px) {
+
+      .small-page {
+        width: 60%;
+        max-width: 90%;
+        padding: 15px;
+      }
+
+      .header {
+        font-size: 1.3rem;
+      }
+
+      label {
+        margin-left: 5em;
+        font-size: 1rem;
+      }
+
+      input[type="radio"] {
+        margin-left: 5em;
+      }
+
+      .settings_button {
+        width: 50%;
+        margin: 0.5em 0;
+      }
+
+      .buttons {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+
+      #close_button {
+        margin-top: 1em;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <div class="small-page">
+
+    <div class="content">
+
+      <form>
+        <fieldset>
+          <label for="easy">Public</label>
+          <input type="radio" id="easy" name="difficulty" value="easy">
+
+          <label for="medium">Hidden</label>
+          <input type="radio" id="medium" name="difficulty" value="medium">
+
+          <label for="hard">Promoted</label>
+          <input type="radio" id="hard" name="difficulty" value="hard">
+
+        </fieldset>
+
+        <div class="buttons">
+          <button class="settings_button">Save</button>
+        </div>
+
+        <div class="buttons">
+          <button id="close_button" class="settings_button">Cancel</button>
+        </div>
+
+      </form>
+    </div>
+  </div>
+</body>
+
+</html>

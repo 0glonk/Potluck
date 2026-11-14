@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Potluck | Sign Up Success</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-utilities.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/signUp.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/potluck.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/register_email.css' %}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+        <div class="success-container">
+            <h1>🎉 You're almost there!</h1>
+            <p>A verification email has been sent to <strong>{{ email }}</strong>.</p>
+            <p>Please check your inbox and click the link to activate your account.</p>
+
+            <a href="{% url 'login' %}" class="btn-custom">Return to Login</a>
+        </div>
+    </div>
+    {% include 'partials/footer.html' %}
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% load static %}
+  <title>Potluck | {{ recipe.title }}</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="A user created recipe shared on Potluck" />
+  <link rel="icon" href="{%static 'images/pot.ico' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/recipe-edit.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/recipe-view.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+  <script src="{%static 'js/potluck.js' %}" defer></script>
+  <script src="{%static 'js/interact.js' %}" defer></script>
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    {% include 'partials/nav.html' %}
+
+    <main class="container">
+      <div id="colorWrapper">
+        <div id="recipeContainer">
+          <div class="recipe-top-sections">
+            <div class="form-section recipe-title-section">
+              <h2 class="fw-bold">{{ recipe.title }}</h2>
+            </div>
+
+            <div class="form-section mb-3 difficulty-section">
+              <h4>Difficulty</h4>
+              <div class="star-rating read-only">
+                {% for i in "54321"|make_list %}
+                <span class="star{% if i|add:0 <= recipe.difficulty|add:0 %} filled{% endif %}">★</span>
+                {% endfor %}
+              </div>
+            </div>
+
+            <div class="form-section mb-3 time-section" id="time">
+              <h4>Time to Make: </h4>
+              <p>{{ recipe.time }} Minutes</p>
+            </div>
+
+            <div class="form-section mb-3 ingredients-section">
+              <h5>Ingredients:</h5>
+              <ul>
+                {% for ingredient in ingredients %}
+                <li>{{ ingredient.name }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+            <div class="form-section mb-3 tags-section">
+              <h5>Tags:</h5>
+              <ul class="list-inline">
+                {% for tag in tags %}
+                <li class="list-inline-item badge">{{ tag.tagName }}</li>
+                {% endfor %}
+              </ul>
+            </div>
+
+
+
+            <div class="image-section mb-3">
+              {% if recipe.image %}
+              <div class="mb-3">
+                <img src="{{ recipe.image }}" alt="Recipe image" class="img-fluid" />
+              </div>
+              {% endif %}
+
+              {% if user.is_authenticated %}
+              <div class="mb-3">
+                {% with like_image=like_status|yesno:"Active," %}
+                <button type="button" onclick="toggleInteraction(this, '{{ recipe.id }}', 'like')"
+                  class="btn btn-sm btn-outline-secondary likeButton">
+                  <img src="{% static 'images/like' %}{{ like_image }}.ico" alt="Like" width="20" height="20" />
+                </button>
+                {% endwith %}
+
+                {% with bookmark_image=bookmark_status|yesno:"Active," %}
+                <button type="button" onclick="toggleInteraction(this, '{{ recipe.id }}', 'bookmark')"
+                  class="btn btn-sm btn-outline-secondary bookmarkButton">
+                  <img src="{% static 'images/bookmark' %}{{ bookmark_image }}.ico" alt="Bookmark" width="20"
+                    height="20" />
+                </button>
+                {% endwith %}
+              </div>
+
+              {% else %}
+              <div class="mb-3">
+                <a href="{% url 'login' %}">Log in</a> to like or bookmark this recipe.
+              </div>
+              {% endif %}
+
+              <div class="mb-3">
+                <p><strong>Likes:</strong> <span id="likeCount">{{ like_count }}</span><p>
+              </div>
+            </div>
+
+
+
+          </div>
+
+          <div class="recipe-middle-sections mb-3">
+            <div id="description" class="form-section mb-3">
+              <h4>Description</h4>
+              <p>{{ recipe.description }}</p>
+            </div>
+
+            <div id="steps" class="form-section mb-3">
+              <h5>Steps:</h5>
+              <ol>
+                {% for step in steps %}
+                <li>{{ step.text }}</li>
+                {% endfor %}
+              </ol>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </main>
+
+    {% include 'partials/footer.html' %}
+  </div>
+</body>
+
+</html>

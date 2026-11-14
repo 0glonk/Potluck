@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <title>Potluck | Email Verified</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <link rel="icon" href="{% static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/bootstrap-utilities.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/signUp.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/potluck.css' %}" />
+    <link rel="stylesheet" href="{% static 'css/register_email.css' %}" />
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+        <div class="success-container" style="max-width: 400px;">
+            <h1>🥳 Email Verified!</h1>
+            <p>Your email has been successfully verified.</p>
+            <p>You can now log in to your Potluck account.</p>
+
+            <a href="{% url 'login' %}" class="btn-custom">Return to Login</a>
+        </div>
+    </div>
+    {% include 'partials/footer.html' %}
+</body>
+
+</html>

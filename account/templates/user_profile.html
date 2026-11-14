@@ -1,0 +1,266 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+  {% load static %}
+  <title>Potluck | Edit Profile</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="Share and discover new recipes with Potluck" />
+  <meta name="csrf-token" content="{{ csrf_token }}">
+  <link rel="icon" href="{%static 'images/pot.ico' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/profile.css' %}" />
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="{%static 'js/potluck.js' %}" defer></script>
+  <script src="{%static 'js/profileEdit.js' %}" defer></script>
+  <script src="{%static 'js/interact.js' %}" defer></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    {% include 'partials/nav.html' %}
+    <main>
+      <div class="flex-grid">
+        <div class="column1">
+          <div class="profile-card">
+            <div class="profile-img">
+              <img id="editProfileImageBtn" src="{% static 'images/profile-image-icon-5.jpg' %}" alt="Profile Image"
+                title="Click to change image" />
+            </div>
+            <div id="accountSettingsContainer" class="info-item">
+              <button type="button" id="accountSettingsBtn" class="edit-icons">
+                <img class="edit-button" src="{% static 'images/cogwheel.png' %}" alt="Settings">
+              </button>
+              <p id="settingsLabel">More settings</p>
+            </div>
+          </div>
+        </div>
+        <div class="column2">
+          <div class="profile-info">
+            <form action="" method="POST">
+              {% csrf_token %}
+              <h3 class="fieldHeader">Username</h3>
+              <div id="usernameBox" class="info-item">
+                <button type="button" id="editNameBtn" class="edit-icons">
+                  <img class="edit-button" src="{% static 'images/edit-icon.png' %}" alt="">
+                </button>
+                <input type="text" id="usernameField" name="username" class="form-control" disabled
+                  value="{{ user_obj.username}}"></input>
+              </div>
+              <h3 class="fieldHeader">Description</h3>
+              <div class="info-item">
+                <button type="button" id="editBioBtn" class="edit-icons">
+                  <img class="edit-button" src="{% static 'images/edit-icon.png' %}" alt="">
+                </button>
+                <textarea id="bioField" name="bio" class="form-control" disabled>{{ user_obj.bio }}</textarea>
+              </div>
+            </form>
+          </div>
+          <button type="button" id="formSubmit">Save</button>
+        </div>
+      </div>
+
+
+
+      <div id="profile-recipe">
+        <div style=" margin: 0 auto; margin-left: 1em; padding-top: 2rem;">
+          <button class="recipe-tab active-tab" onclick="showUserRecipes()">Recipes</button>
+          <button class="recipe-tab" onclick="showBookmarkedRecipes()">Favorites</button>
+        </div>
+
+        <div class="recipe-wrapper">
+          <div style="width: 95%; margin-right: auto; margin-left: auto;">
+            <div class="search-filter-bar"
+              style="display: flex; justify-content: flex-start; align-items: center; margin-left: 1em; margin-top: 1em; gap: 1rem;  margin-bottom: 1rem; flex-wrap: wrap;">
+              <div class="input-group" style="max-width: 300px;">
+                <span class="input-group-text" id="search-addon">
+                  <a href="#">🔎</a>
+                </span>
+                <input type="text" class="form-control" placeholder="Search" aria-label="Search" />
+              </div>
+
+              <select class="form-select" style="max-width: 150px;">
+                <option selected>Filters</option>
+                <option value="1">Most Liked</option>
+                <option value="2">Newest</option>
+                <option value="3">Oldest</option>
+              </select>
+            </div>
+
+            {# Recipe Cards #}
+            <div class="album py-5">
+              <div class="container" style="max-width: 90vw;">
+                <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-3"
+                  id="user_recipes">
+                  {% for recipe_info in user_recipes %}
+                  <div id="user_recipes" class="col">
+                    <div class="card shadow-sm h-100 d-flex flex-column"><a
+                        href="{% url 'recipe_detail' recipe_info.recipe.id %}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                          src="{{ recipe_info.recipe.image }}" alt="{{ recipe_info.recipe.title }}" role="img"
+                          preserveAspectRatio="xMidYMid slice" focusable="false"></a>
+
+                      <!-- Make card-body grow to push buttons down -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ recipe_info.recipe.title }}</h5>
+
+                        <div class="star-rating read-only">
+                          <span style="color:white">Difficulty: </span>
+                          {% for i in "12345"|make_list %}
+                          <span
+                            class="star{% if i|add:0 <= recipe_info.recipe.difficulty|add:0 %} filled{% endif %}">★</span>
+                          {% endfor %}
+                        </div>
+
+                        <p class="card-text">{{ recipe_info.recipe.time }} Minutes</p>
+
+                        <ul class="list-inline">
+                          {% for tag in recipe_info.tags|slice:":4" %}
+                          <li class="list-inline-item badge">{{ tag.tagName }}</li>
+                          {% endfor %}
+                        </ul>
+
+                        <!-- Spacer to push buttons down -->
+                        <div class="mt-auto">
+                          <div class="d-flex justify-content-end align-items-center">
+                            <div class="btn-group">
+                              {% if user.is_authenticated %}
+                              {% with like_image=recipe_info.like_status|yesno:"Active," %}
+                              <button type="button"
+                                onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'like')"
+                                class="btn btn-sm btn-outline-secondary likeButton" id="likeButton">
+                                <img src="{% static 'images/like' %}{{ like_image }}.ico" alt="Like" width="20"
+                                  height="20" />
+                              </button>
+                              {% endwith %}
+
+                              {% with bookmark_image=recipe_info.bookmark_status|yesno:"Active," %}
+                              <button type="button"
+                                onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'bookmark')"
+                                class="btn btn-sm btn-outline-secondary bookmarkButton" id="bookmarkButton">
+                                <img src="{% static 'images/bookmark' %}{{ bookmark_image }}.ico" alt="Bookmark"
+                                  width="20" height="20" />
+                              </button>
+                              {% endwith %}
+                              {% else %}
+                              <div>
+                                <a href="{% url 'login' %}">Log in</a> to like or bookmark this recipe.
+                              </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% empty %}
+                  <p>You haven't created any recipes yet!</p>
+                  {% endfor %}
+                </div>
+
+                <div
+                  class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-3 hidden"
+                  id="bookmarked_recipes">
+                  {% for recipe_info in bookmarked_recipes %}
+                  <div class="col">
+                    <div class="card shadow-sm h-100 d-flex flex-column"><a
+                        href="{% url 'recipe_detail' recipe_info.recipe.id %}">
+                        <img class="bd-placeholder-img card-img-top" width="100%" height="225"
+                          src="{{ recipe_info.recipe.image }}" alt="{{ recipe_info.recipe.title }}" role="img"
+                          preserveAspectRatio="xMidYMid slice" focusable="false"></a>
+
+                      <!-- Make card-body grow to push buttons down -->
+                      <div class="card-body d-flex flex-column">
+                        <h5 class="card-title">{{ recipe_info.recipe.title }}</h5>
+
+                        <div class="star-rating read-only">
+                          <span style="color:white">Difficulty: </span>
+                          {% for i in "12345"|make_list %}
+                          <span
+                            class="star{% if i|add:0 <= recipe_info.recipe.difficulty|add:0 %} filled{% endif %}">★</span>
+                          {% endfor %}
+                        </div>
+
+                        <p class="card-text">{{ recipe_info.recipe.time }} Minutes</p>
+
+                        <ul class="list-inline">
+                          {% for tag in recipe_info.tags|slice:":4" %}
+                          <li class="list-inline-item badge">{{ tag.tagName }}</li>
+                          {% endfor %}
+                        </ul>
+
+                        <!-- Spacer to push buttons down -->
+                        <div class="mt-auto">
+                          <div class="d-flex justify-content-end align-items-center">
+                            <div class="btn-group">
+                              {% if user.is_authenticated %}
+                              {% with like_image=recipe_info.like_status|yesno:"Active," %}
+                              <button type="button"
+                                onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'like')"
+                                class="btn btn-sm btn-outline-secondary likeButton" id="likeButton">
+                                <img src="{% static 'images/like' %}{{ like_image }}.ico" alt="Like" width="20"
+                                  height="20" />
+                              </button>
+                              {% endwith %}
+
+                              {% with bookmark_image=recipe_info.bookmark_status|yesno:"Active," %}
+                              <button type="button"
+                                onclick="toggleInteraction(this, '{{ recipe_info.recipe.id }}', 'bookmark')"
+                                class="btn btn-sm btn-outline-secondary bookmarkButton" id="bookmarkButton">
+                                <img src="{% static 'images/bookmark' %}{{ bookmark_image }}.ico" alt="Bookmark"
+                                  width="20" height="20" />
+                              </button>
+                              {% endwith %}
+                              {% else %}
+                              <div>
+                                <a href="{% url 'login' %}">Log in</a> to like or bookmark this recipe.
+                              </div>
+                              {% endif %}
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  {% empty %}
+                  <p>You haven't saved any recipes yet!</p>
+                  {% endfor %}
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </main>
+
+    <!-- account settings menu -->
+    <div id="acctSettingsOverlay" class="overlay"></div>
+
+    <div id="acctSettingsPopup" class="acct-settings-popup" style="display: none;">
+      <div class="content">
+        <div class="buttons">
+          <button class="settings_button">Hide Account</button>
+        </div>
+        <div class="buttons">
+          <button class="settings_button">Delete Account</button>
+        </div>
+        <div class="buttons">
+          <a href="{% url 'premium' %}">
+            <button class="settings_button">Premium</button>
+          </a>
+        </div>
+        <div class="buttons">
+          <button id="acctSettingsCancelBtn" class="settings_button">Cancel</button>
+        </div>
+      </div>
+    </div>
+    {% include 'partials/footer.html' %}
+  </div>
+</body>
+
+</html>

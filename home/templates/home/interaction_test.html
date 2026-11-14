@@ -1,0 +1,66 @@
+
+<!-- This is a test html copy pasted from chatgpt I do not know html please do not judge <3 - AJ-->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Interaction Test</title>
+  <style>
+    body { font-family: Arial, sans-serif; padding: 2rem; }
+    input, button { margin: 0.5rem 0; display: block; }
+    #output { margin-top: 1rem; font-weight: bold; white-space: pre-wrap; }
+  </style>
+</head>
+<body>
+  <h1>Interaction Test Page</h1>
+
+  <label for="recipeId">Recipe ID:</label>
+  <input type="number" id="recipeId" placeholder="Enter Recipe ID" />
+
+  <button onclick="toggleInteraction('like')">Toggle Like</button>
+  <button onclick="toggleInteraction('bookmark')">Toggle Bookmark</button>
+
+  <div id="output">Response will show here...</div>
+
+  <script>
+    function getCSRFToken() {
+      const name = 'csrftoken';
+      const cookies = document.cookie.split(';');
+      for (let cookie of cookies) {
+        cookie = cookie.trim();
+        if (cookie.startsWith(name + '=')) {
+          return decodeURIComponent(cookie.slice(name.length + 1));
+        }
+      }
+      return '';
+    }
+
+    function toggleInteraction(type) {
+      const recipeId = document.getElementById('recipeId').value;
+      const output = document.getElementById('output');
+
+      if (!recipeId) {
+        alert("Please enter a recipe ID.");
+        return;
+      }
+
+      fetch(`/interact/${type}/`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          "X-CSRFToken": getCSRFToken()
+        },
+        body: JSON.stringify({ recipe_id: recipeId })
+      })
+      .then(res => res.json())
+      .then(data => {
+        output.textContent = JSON.stringify(data, null, 2);
+      })
+      .catch(err => {
+        output.textContent = "Error: " + err;
+      });
+    }
+  </script>
+</body>
+</html>

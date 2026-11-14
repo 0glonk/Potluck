@@ -1,0 +1,12 @@
+{% load static %}
+<footer class="d-flex flex-wrap gap-3 justify-content-center align-items-center border-top">
+    <img src="{%static 'images/potAlt.ico' %}" height="18px" width="18px" />
+    <a href="/">Home</a>
+    {% if user.is_authenticated %}
+    <a href="/account/user_profile/">Profile</a>
+    {% else %}
+    <a href="/login">Login</a>
+    {% endif %}
+    <a href="/account/premium">Premium</a>
+    <a href="/about">About</a>
+</footer>

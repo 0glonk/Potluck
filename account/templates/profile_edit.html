@@ -1,0 +1,968 @@
+<!--  
+  ######################################## USER_PROFILE.HTML IS THE ONLY USER (OWNER) PROFILE PAGE WE NEED ################################################
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+  {% load static %}
+  <title>Potluck | Home</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="Share and discover new recipes with Potluck" />
+  <link rel="icon" href="" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css" />
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.js" defer></script>
+  <script src="{%static 'js/swiper.js' %}" defer></script>
+  <style>
+    :root {
+      --red-orange: #FF5C4D;
+      --orange: #FF9636;
+      --yellow: #FFCD58;
+      --green: #DAD870;
+    }
+
+    main,
+    .album {
+      background-image: linear-gradient(to bottom right, var(--green), #e1e08d);
+    }
+
+    main {
+      flex: 1;
+      padding-bottom: 0;
+      margin-bottom: 0;
+      background-image: linear-gradient(to bottom right, var(--green), #e1e08d);
+    }
+
+    html,
+    body {
+      height: 100%;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .recipe-card-container {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+
+    .profile-card {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: flex-start;
+      text-align: left;
+      gap: 2rem;
+      max-width: 90%;
+      margin: 0 auto 2rem auto;
+      padding-top: 2rem;
+    }
+
+    .profile-img img {
+      width: 150px;
+      height: 150px;
+      border: 2px solid #007bff;
+      border-radius: 50%;
+      object-fit: cover;
+    }
+
+    .profile-info {
+      display: flex;
+      flex-direction: column;
+      gap: 1rem;
+      flex: 1;
+      min-width: 250px;
+    }
+
+    .info-item {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+    }
+
+    .edit-icons {
+      background: none;
+      border: none;
+      padding: 0;
+      cursor: pointer;
+    }
+
+    .edit-button {
+      width: 20px;
+      height: 20px;
+    }
+
+    .swiper {
+      width: 90%;
+      max-width: 1200px;
+      --swiper-pagination-color: var(--orange);
+      --swiper-pagination-bottom: 0px;
+      --swiper-navigation-color: var(--orange);
+
+      .swiper-slide {
+        margin: 3.75em 0;
+        background-size: cover;
+        width: 250px;
+        height: 250px;
+      }
+
+      .swiper-slide img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        box-shadow: 2px 2px 4px rgba(0, 0, 0, 0.4);
+        border-radius: 10%;
+      }
+
+      .swiper-slide span {
+        z-index: 100;
+        position: absolute;
+        bottom: 8%;
+        left: 0%;
+        background-color: var(--orange);
+        width: 250px;
+        height: 40px;
+        text-align: center;
+        line-height: 40px;
+        font-size: 1em;
+        box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.4);
+      }
+
+      .swiper-slide a {
+        color: white;
+      }
+    }
+
+    nav {
+      background-image: linear-gradient(to bottom right, var(--red-orange), var(--orange));
+      font-size: 1.25em;
+    }
+
+    #navLogo {
+      max-width: 130px;
+      min-width: 80px;
+      height: auto;
+      width: 15vw;
+    }
+
+    .navbar-toggler:focus {
+      box-shadow: 0 0 0 0.1rem;
+    }
+
+    .nav-item {
+      padding: 0 1em;
+    }
+
+    .nav-item:hover {
+      background-color: var(--yellow);
+      border-radius: 15px;
+    }
+
+    .dropdown-menu {
+      background-color: rgb(231, 231, 231);
+
+      :hover {
+        background-color: var(--green);
+      }
+    }
+
+    .edit-button {
+      width: 20px;
+      height: 20px;
+    }
+
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0, 0, 0, 0.6);
+      display: none;
+      z-index: 999;
+    }
+
+    /* account settings popup menu */
+    .acct-settings-popup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1001;
+      background-color: white;
+      border: 3px solid var(--green);
+      border-radius: 15px;
+      padding: 2rem 1.5rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+      width: 90%;
+      max-width: 400px;
+    }
+
+    #acctSettingsPopup .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+    }
+
+    #acctSettingsPopup .buttons {
+      width: 100%;
+      display: flex;
+      justify-content: center;
+    }
+
+    /* spacing between edit-icon and description text */
+    .info-item>button+p {
+      margin-left: 0.75rem;
+    }
+
+    #settingsPopup {
+      display: none;
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 1000;
+      width: 100%;
+      max-width: 450px;
+      padding: 40px 20px;
+      background-color: white;
+      border-radius: 15px;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.25);
+      border: 3px solid var(--green);
+    }
+
+    /* Center everything in the popup */
+    #settingsPopup .content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    /* Style for each action button */
+    .settings_button {
+      background-color: var(--orange);
+      border: 2px solid black;
+      border-radius: 1em;
+      color: black;
+      font-weight: 600;
+      padding: 12px 24px;
+      margin: 12px 0;
+      width: 200px;
+      text-align: center;
+      transition: background-color 0.3s ease;
+      cursor: pointer;
+    }
+
+    .settings_button:hover {
+      background-color: var(--yellow);
+    }
+
+    .popup-button-group {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .recipe-tab {
+      background-color: #f0f0f0;
+      border: 1px solid #ccc;
+      border-bottom: none;
+      padding: 10px 20px;
+      font-weight: bold;
+      cursor: pointer;
+      border-radius: 8px 8px 0 0;
+      margin: 0 5px;
+    }
+
+    .active-tab {
+      background-color: white;
+      border-bottom: 2px solid white;
+    }
+
+    #profile-recipe {
+      width: 90%;
+      margin-left: auto;
+      margin-right: auto;
+    }
+
+    .recipe-wrapper {
+      border: 3px solid black;
+      margin: 0 auto;
+      border-radius: 4px;
+    }
+
+    .search-filter-bar {
+      display: flex;
+      justify-content: flex-start;
+      align-items: center;
+      gap: 1rem;
+      margin-bottom: 1rem;
+      flex-wrap: wrap;
+    }
+
+    .search-filter-bar .input-group {
+      max-width: 300px;
+    }
+
+    .search-filter-bar select {
+      max-width: 150px;
+    }
+
+    .footer-nav {
+      background-image: linear-gradient(to bottom right, var(--red-orange), var(--orange));
+      border-top: 1px solid #ccc;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      padding: 0.5rem 1rem;
+      z-index: 1000;
+      flex-wrap: wrap;
+    }
+
+    .footer-logo img {
+      height: 30px;
+    }
+
+    .footer-links {
+      display: flex;
+      gap: 1.5rem;
+      flex-wrap: wrap;
+      margin-top: 0.3rem;
+    }
+
+    .footer-link {
+      color: #333;
+      text-decoration: none;
+      font-weight: 500;
+      font-size: 0.9rem;
+      background-color: transparent !important;
+      padding: 0.25rem 0.5rem;
+      border-radius: 4px;
+    }
+
+    .footer-link:hover {
+      color: var(--red-orange);
+      background-color: transparent !important;
+      /* <-- ensure no hover bg */
+    }
+
+    /* adds extra padding to dropdown in nav */
+    @media screen and (max-width: 768px) {
+      .dropdown:has(.show) {
+        padding-bottom: 15px;
+      }
+    }
+
+    @media screen and (max-width: 768px) {
+      .profile-card {
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        text-align: center;
+        margin: 0 auto;
+      }
+
+      .profile-info {
+        align-items: center;
+      }
+
+      .info-item {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .info-item p,
+      .info-item h1 {
+        margin: 0;
+        text-align: center;
+      }
+    }
+
+    .searchContainer {
+      justify-content: center;
+      margin: 1em auto;
+      width: 90%;
+    }
+
+    .searchContainer form {
+      justify-content: center;
+    }
+
+    #searchHome {
+      max-width: 900px;
+      width: 50%;
+    }
+
+    #filter {
+      max-width: 150px;
+      margin-left: 1em;
+    }
+
+    /* Recipe Card */
+    .bd-placeholder-img {
+      font-size: 1.125rem;
+      text-anchor: middle;
+      -webkit-user-select: none;
+      -moz-user-select: none;
+      user-select: none;
+    }
+
+    .card {
+      max-width: 275px;
+      margin: 0 auto;
+    }
+
+    .card-body {
+      background-image: linear-gradient(to bottom, var(--red-orange), var(--orange));
+      color: white;
+    }
+
+    .btn-outline-secondary,
+    .btn-outline-secondary:hover,
+    .btn-outline-secondary:active,
+    .btn-outline-secondary:visited,
+    .btn-outline-secondary:focus,
+    .btn-outline-secondary:active:focus {
+      background-color: var(--yellow);
+      border-color: black;
+      color: black;
+    }
+
+    .center {
+      text-align: center;
+    }
+
+    #homeTitle {
+      margin: 3em auto 4em;
+      width: 90%;
+    }
+
+    @media screen and (max-width: 600px) {
+      .footer-nav {
+        flex-direction: column;
+        align-items: center;
+        gap: 0.5rem;
+        text-align: center;
+      }
+
+      .footer-links {
+        flex-direction: row;
+        gap: 1rem;
+      }
+
+      .footer-logo img {
+        height: 24px;
+      }
+    }
+  </style>
+</head>
+
+<body>
+  <nav class="navbar sticky-top navbar-expand-lg">
+    <div id="navBar" class="container-fluid">
+      <a class="navbar-brand" href="#">
+        <img id="navLogo" src="{%static 'images/potluckText.png' %}" alt="Potluck Logo" width="130" height="65">
+      </a>
+      <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+        aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+        <span class="navbar-toggler-icon"></span>
+      </button>
+      <div class="collapse navbar-collapse" id="navbarSupportedContent">
+        <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+          <li class="nav-item">
+            <a class="nav-link active" aria-current="page" href="#">Home</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Favorites</a>
+          </li>
+          <li class="nav-item dropdown">
+            <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              Account
+            </a>
+            <ul class="dropdown-menu">
+              <li><a class="dropdown-item" href="#">New Recipe</a></li>
+              <li><a class="dropdown-item" href="#">Manage Profile</a></li>
+              <li>
+                <hr class="dropdown-divider">
+              </li>
+              <li><a class="dropdown-item" href="#">Logout</a></li>
+            </ul>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="#">Premium</a>
+          </li>
+          <li class="nav-item">
+            <a class="nav-link" href="/about">About</a>
+          </li>
+        </ul>
+        <form class="d-flex" role="search" style="margin-bottom: 20px;">
+          <input class="form-control me-2 shadow-none" type="search" placeholder="Search" aria-label="Search">
+          <button class="btn btn-outline-dark" type="submit">Search</button>
+        </form>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+
+    <div class="profile-card">
+      <div class="profile-img">
+        <label for="editProfileImageBtn" style="cursor: pointer;">
+          <img id="editProfileImageBtn" src="{% static 'images/profile-image-icon-5.jpg' %}" alt="Profile Image"
+            title="Click to change image">
+        </label>
+        <input type="file" id="profileImageInput" accept="image/*" style="display: none;">
+      </div>
+
+      <div class="profile-info">
+        <div class="info-item">
+          <button id="accountSettingsBtn" class="edit-icons">
+            <img class="edit-button" src="{% static 'images/cogwheel.png' %}" alt="Settings">
+          </button>
+
+          <h1>Potluck_User</h1>
+        </div>
+
+        <div class="info-item">
+          <button class="edit-icons">
+            <img class="edit-button" src="{% static 'images/edit-icon.png' %}" alt="">
+          </button>
+        -->
+<!-- hopefully this can be changed to a form where the user can edit it and it will update the backend storage -->
+<!--
+          <p><strong>Description:</strong> Lorem ipsum dolor sit amet consectetur adipisicing elit. Laborum molestias
+            labore eos dolores perspiciatis mollitia recusandae, fugiat reprehenderit? Odio vero blanditiis dolores
+            aliquam quo praesentium eligendi inventore labore minus veniam. Lorem ipsum dolor sit amet consectetur
+            adipisicing elit. Modi saepe qui, repudiandae, magni eius ex laboriosam corporis quos ab rem in at illum
+            distinctio blanditiis iste eos? Mollitia, cum dignissimos.</p>
+        </div>
+
+        <div class="info-item">
+          <button class="edit-icons">
+            <img class="edit-button" src="{% static 'images/edit-icon.png' %}" alt="">
+          </button>
+          <p><strong>Email:</strong> xxxxxx@123</p>
+        </div>
+      </div>
+    </div>
+
+
+    {# Recipe Cards #}
+    <div id="profile-recipe">
+      <div style=" margin: 0 auto; margin-left: 1em; padding-top: 2rem;">
+        <button class="recipe-tab active-tab">Recipes</button>
+        <button class="recipe-tab">Favorites</button>
+      </div>
+
+      <div class="recipe-wrapper">
+        <div style="width: 95%; margin-right: auto; margin-left: auto;">
+          <div class="search-filter-bar"
+            style="display: flex; justify-content: flex-start; align-items: center; margin-left: 1em; margin-top: 1em; gap: 1rem;  margin-bottom: 1rem; flex-wrap: wrap;">
+            <div class="input-group" style="max-width: 300px;">
+              <span class="input-group-text" id="search-addon">
+                <a href="#">🔎</a>
+              </span>
+              <input type="text" class="form-control" placeholder="Search" aria-label="Search" />
+            </div>
+
+            <select class="form-select" style="max-width: 150px;">
+              <option selected>Filters</option>
+              <option value="1">Most Liked</option>
+              <option value="2">Newest</option>
+              <option value="3">Oldest</option>
+            </select>
+          </div>
+
+          <div class="album py-5 bg-body-tertiary">
+            <div class="recipe-card-container">
+              <div class="album py-5 bg-body-tertiary">
+                <div class="recipe-card-container">
+                  <div class="container" style="max-width: 90vw;">
+                    <div
+                      class="row row-cols-1 row-cols-sm-2 row-cols-md-3 row-cols-lg-4 row-cols-xl-5 row-cols-xxl-6 g-3">
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+
+
+                                <div id="overlay" class="overlay"></div>
+
+                                <div id="settingsPopup" class="small-page">
+                                  <div class="content">
+                                    <form class="popup-button-group">
+                                      <button class="settings_button" type="button">Edit</button>
+                                      <button class="settings_button" type="button">Promote</button>
+                                      <button class="settings_button" type="button">Hide</button>
+                                      <button class="settings_button" type="button">Delete</button>
+                                      <button id="close_button" class="settings_button" type="button">Cancel</button>
+                                    </form>
+
+
+                                  </div>
+
+                                </div>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Advertisement</h5>
+                            <p class="card-text">This is the advertisement's text; it is provided by the advertising
+                              party
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary">View</button>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                      <div class="col">
+                        <div class="card shadow-sm">
+                          <svg class="bd-placeholder-img card-img-top" width="100%" height="225"
+                            xmlns="http://www.w3.org/2000/svg" role="img" aria-label="Placeholder: Thumbnail"
+                            preserveAspectRatio="xMidYMid slice" focusable="false">
+                            <title>Placeholder</title>
+                            <rect width="100%" height="100%" fill="#55595c" /><text x="50%" y="50%" fill="#eceeef"
+                              dy=".3em">Thumbnail</text>
+                          </svg>
+                          <div class="card-body">
+                            <h5 class="card-title">Recipe Title</h5>
+                            <p class="card-text">The recipe description will be listed here in this text box for the
+                              user
+                              to
+                              read.
+                            </p>
+                            <div class="d-flex justify-content-between align-items-center">
+                              <div class="btn-group">
+
+                                <button type="button" class="btn btn-sm btn-outline-secondary edit-popup-btn">
+                                  <img src="{% static 'images/edit-icon.png' %}" alt="Edit" width="20" height="20" />
+                                </button>
+                              </div>
+                              <small class="text-body-secondary">9 mins</small>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </main>
+-->
+<!-- footer -->
+<!--
+<footer class="footer-nav">
+  <div class="footer-logo">
+    <a href="#">
+      <img src="{% static 'images/pot.ico' %}" alt="Potluck Logo" />
+    </a>
+  </div>
+  <div class="footer-links">
+    <a href="#" class="footer-link">Home</a>
+    <a href="#" class="footer-link">Account</a>
+    <a href="#" class="footer-link">Premium</a>
+    <a href="#" class="footer-link">About</a>
+  </div>
+</footer>
+-->
+<!-- account settings menu -->
+<!-- 
+<div id="acctSettingsOverlay" class="overlay"></div>
+
+<div id="acctSettingsPopup" class="acct-settings-popup" style="display: none;">
+  <div class="content">
+    <div class="buttons">
+      <button class="settings_button">Hide Account</button>
+    </div>
+    <div class="buttons">
+      <button class="settings_button">Delete Account</button>
+    </div>
+    <div class="buttons">
+      <button class="settings_button">Premium</button>
+    </div>
+    <div class="buttons">
+      <button id="acctSettingsCancelBtn" class="settings_button">Cancel</button>
+    </div>
+  </div>
+</div>
+
+</body>
+
+<script>
+  const popupButtons = document.querySelectorAll('.edit-popup-btn');
+  const closeBtn = document.getElementById('close_button');
+  const overlay = document.getElementById('overlay');
+  const settingsPopup = document.getElementById('settingsPopup');
+
+  // Show popup
+  function openPopup() {
+    settingsPopup.style.display = 'block';
+    overlay.style.display = 'block';
+  }
+
+  // Hide popup
+  function closePopup() {
+    settingsPopup.style.display = 'none';
+    overlay.style.display = 'none';
+  }
+
+  // Attach click to each popup trigger button
+  popupButtons.forEach(button => {
+    button.addEventListener('click', openPopup);
+  });
+
+  // Close on cancel button
+  closeBtn.addEventListener('click', (e) => {
+    e.preventDefault();
+    closePopup();
+  });
+
+  // Close on overlay click
+  overlay.addEventListener('click', closePopup);
+
+  // Profile Image Update
+  const editProfileImageBtn = document.getElementById('editProfileImageBtn');
+
+  editProfileImageBtn.addEventListener('click', function () {
+    alert("Profile image editing will be available soon!");
+  });
+
+  // account settings menu pop up 
+  const acctSettingsBtn = document.getElementById('accountSettingsBtn');
+  const acctSettingsPopup = document.getElementById('acctSettingsPopup');
+  const acctSettingsOverlay = document.getElementById('acctSettingsOverlay');
+  const acctSettingsCancelBtn = document.getElementById('acctSettingsCancelBtn');
+
+  acctSettingsBtn.addEventListener('click', () => {
+    acctSettingsPopup.style.display = 'block';
+    acctSettingsOverlay.style.display = 'block';
+  });
+
+  acctSettingsCancelBtn.addEventListener('click', () => {
+    acctSettingsPopup.style.display = 'none';
+    acctSettingsOverlay.style.display = 'none';
+  });
+
+  acctSettingsOverlay.addEventListener('click', () => {
+    acctSettingsPopup.style.display = 'none';
+    acctSettingsOverlay.style.display = 'none';
+  });
+</script>
+
+
+
+</html>

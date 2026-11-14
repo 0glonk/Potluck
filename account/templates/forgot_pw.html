@@ -1,0 +1,45 @@
+{% load static %}
+<!DOCTYPE html>
+<html>
+
+<head>
+    <title>Potluck | Forgot Password</title>
+    {% load static %}
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="Log-in to your Potluck account" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="icon" href="{%static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/signin.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@docsearch/css@3">
+    <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+    <script src="{%static 'js/potluck.js' %}" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+        <div class="signup-wrapper">
+            <div class="signup-container">
+                <main class="form-signin w-100 m-auto">
+                    <h1 class="h3 mb-3 fw-normal">Forgot your password?</h1>
+                    <form method="post">
+                        {% csrf_token %}
+                        <div class="form-floating mb-3">
+                            <input type="email" name="email" class="form-control" placeholder="Enter your email"
+                                required>
+                            <label for="email">Email address</label>
+                        </div>
+                        <button class="btn btn-primary w-100 py-2" type="submit">Send Reset Link</button>
+                    </form>
+                </main>
+            </div>
+        </div>
+        {% include 'partials/footer.html' %}
+    </div>
+</body>
+
+</html>

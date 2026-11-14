@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+    {% load static %}
+    <title>Potluck | About</title>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="keywords" content="about, company information, information, learn, more, contact" />
+    <meta name="description" content="Information about Potluck" />
+    <meta name="csrf-token" content="{{ csrf_token }}">
+    <link rel="icon" href="{%static 'images/pot.ico' %}" />
+    <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+    <link rel="stylesheet" href="{%static 'css/about.css' %}" />
+    <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+    <script src="{%static 'js/potluck.js' %}" defer></script>
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+
+        <main>
+            <div class="about-content">
+                <div class="text-heading">
+                    <h1>Bringing People Together,<br />One Dish at a Time</h1>
+                </div>
+
+                <div class="inner reverse">
+                    <div class="about-image">
+                        <img src="{% static 'images/about1.jpg' %}" alt="A person handing a plate of food to another" />
+                    </div>
+
+                    <div class="text-paragraph">
+                        <h1 class="desktop">Bringing People Together,<br />One Dish at a Time</h1>
+                        <p>
+                            At Potluck, we believe that food is a universal language of connection, and that every
+                            recipe comes with a story. Potluck was created to bring those stories to the table.
+                            Rooted
+                            in the value of community, sharing, and discovery,
+                            our platform is home to a thriving community where culinary traditions are honored and
+                            shared. Whether you’re passing down a cherished family recipe or experimenting with new
+                            flavors,
+                            we provide a thoughtful space for home cooks and food lovers to inspire one another.
+                            Through the power of a smile and a full belly, we aim to foster meaningful connections
+                            that
+                            extend beyond the kitchen and into everyday life!
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <div class="about-content">
+                <div class="text-heading reverse">
+                    <h1>From Kitchen to Community</h1>
+                </div>
+
+                <div class="inner">
+                    <div class="about-image">
+                        <img src="{% static 'images/about2.jpg' %}" alt="A group of people eating at a table outside" />
+                    </div>
+
+                    <div class="text-paragraph">
+                        <h1 class="desktop">From Kitchen to Community</h1>
+                        <p>
+                            At Potluck we love partnering with local businesses to foster meaningful connections
+                            between
+                            food lovers and the vibrant culinary scene in their communities. We help local
+                            restaurants,
+                            bakeries, markets, and grocers showcase their offerings, share behind-the-scenes
+                            stories,
+                            and engage directly with individuals who are passionate about food. By partnering with
+                            Potluck, local businesses gain a platform to highlight their unique flavors, promote
+                            events,
+                            and build lasting relationships with nearby home cooks and food enthusiasts. It’s all
+                            about
+                            celebrating local flavor, supporting small businesses, and bringing people together—one
+                            delicious meal at a time.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </main>
+        {% include 'partials/footer.html' %}
+    </div>
+</body>
+
+</html>

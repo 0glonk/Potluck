@@ -1,0 +1,246 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en">
+
+<head>
+  {% load static %}
+  <!-- This is the form for the recipe edit page; might need the rest of the page to be a form -Mayah -->
+  <title>Potluck | Edit Recipe</title>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="keywords"
+    content="cooking, recipe, sharing, food, cook, home cook, chef, restaurant, shopping, social media" />
+  <meta name="description" content="Create or edit a recipe" />
+  <link rel="icon" href="{%static 'images/pot.ico' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap-utilities.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/bootstrap.css' %}" />
+  <link rel="stylesheet" href="{% static 'css/recipe-edit.css' %}" />
+  <link rel="stylesheet" href="{%static 'css/potluck.css' %}" />
+  <script src="{%static 'js/potluck.js' %}" defer></script>
+  <script src="{%static 'js/bootstrap.bundle.min.js' %}" defer></script>
+  <script src="{%static 'js/recipe_edit.js' %}" defer></script>
+
+  <script>
+    // Make sure this is outputted by your Django template only if recipe and image_data_uri exist
+    window.existingImageDataUri = "{{ recipe.image_data_uri|default:''|escapejs }}";
+  </script>
+  <link rel="stylesheet" href="{%static 'css/cropper.min.css' %}" />
+  <script src="{%static 'js/cropper.min.js' %}"></script>
+</head>
+
+<body>
+  <div class="wrapper">
+    {% include 'partials/nav.html' %}
+
+    <main class="container">
+
+      <form id="mainRecipeForm" method="post" enctype="multipart/form-data">
+        {% csrf_token %}
+        {{ form.non_field_errors }}
+
+        <div class="recipe-top-sections">
+
+          <div class="form-section mb-3 recipe-title-section">
+            <h2 class="fw-bold"> {{ form.title.label_tag }}</h2>
+            {{ form.title }}
+            {{ form.title.errors }}
+          </div>
+
+          <div class="form-section mb-3 difficulty-section">
+            <h4 class="mb-1">Difficulty</h4>
+            <div class="star-rating">
+              {% for i in "54321" %}
+              <input type="radio" id="star{{ i }}" name="{{ form.difficulty.name }}" value="{{ i }}" {% if form.difficulty.value|stringformat:"s" == i|stringformat:"s" %}checked{% endif %}>
+              <label for="star{{ i }}">★</label>
+              {% endfor %}
+            </div>
+            {{ form.difficulty.errors }}
+          </div>
+
+          <div class="form-section mb-3 time-section">
+            <label for="{{ form.time.id_for_label }}">{{ form.time.label }}</label>
+            {{ form.time }}
+            {{ form.time.errors }}
+          </div>
+
+          <div class="form-section mb-3 ingredients-section">
+            <h4>Ingredients</h4>
+            <div id="ingredient-formset"> {{ formset_ingredients.management_form }}
+              {% for ingredient_form in formset_ingredients %}
+              <div class="ingredient-form d-flex align-items-center mb-2">
+                {{ ingredient_form.id }}
+                <div class="flex-grow-1 me-2">
+                  {{ ingredient_form.name }}
+                  {{ ingredient_form.name.errors }}
+                </div>
+                <div class="delete-button-container">
+                {% if formset_ingredients.can_delete %}
+                <div class="form-check me-2 form-hidden">
+                  {{ ingredient_form.DELETE }}
+                  <label class="form-check-label" for="{{ ingredient_form.DELETE.id_for_label }}">Delete</label>
+                </div>
+                {% if not forloop.first %}
+                <button type="button" class="btn btn-sm btn-outline-danger remove-form">X</button>
+                {% endif %}
+                {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <button type="button" id="add-ingredient" class="btn btn-sm btn-secondary mt-2">+ Add Ingredient</button>
+          </div>
+
+          <div class="form-section mb-3 tags-section">
+            <h4>Tags</h4>
+            <div id="tag-formset"> {{ formset_tags.management_form }}
+              {% for tag_form in formset_tags %}
+              <div class="tag-form d-flex align-items-center mb-2">
+                {{ tag_form.id }}
+                <div class="flex-grow-1 me-2">
+                  {{ tag_form.tagName }}
+                  {{ tag_form.tagName.errors }}
+                </div>
+                <div class="delete-button-container">
+                {% if formset_tags.can_delete %}
+                <div class="form-check me-2 form-hidden">
+                  {{ tag_form.DELETE }}
+                  <label class="form-check-label" for="{{ tag_form.DELETE.id_for_label }}">Delete</label>
+                </div>
+                {% if not forloop.first %}
+                <button type="button" class="btn btn-sm btn-outline-danger remove-form">X</button>
+                {% endif %}
+                {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <button type="button" id="add-tag" class="btn btn-sm btn-secondary mt-2">+ Add Tag</button>
+          </div>
+
+          <div class="image-section mb-3">
+            <h4>Recipe Image</h4>
+            <input type="hidden" name="image_data_uri" id="id_image_data_uri">
+        
+            <label id="add-image" for="id_image_upload" class="btn btn-secondary mb-2">Choose Image</label>
+            <input type="file" id="id_image_upload" accept="image/*" style="display: none;">
+        
+            <div id="image-crop-container" style="max-width: 100%; margin-bottom: 1rem; display: none;">
+                <img id="image-to-crop" src="" alt="Image for cropping">
+            </div>
+            <button type="button" id="crop-button" class="btn btn-primary" style="display: none;">Crop Image</button>
+        
+            <div id="cropped-preview-container" style="margin-top: 1rem; display: none;">
+                <h5>Preview:</h5>
+                <img id="cropped-preview" src="" alt="Cropped image preview">
+            </div>
+        
+            {% comment %}
+            <div style="display: none;">
+                {{ form.image.label_tag }}
+                {{ form.image }}
+                {{ form.image.errors }}
+            </div>
+            {% endcomment %}
+        </div>
+
+        </div>
+        <div class="recipe-middle-sections mb-3">
+          <div class="form-section mb-3">
+            <h4 class="d-flex align-items-center"> {{ form.description.label_tag }}</h4>
+            {{ form.description }}
+            {{ form.description.errors }}
+          </div>
+
+          <div class="form-section mb-3">
+            <h4>Steps</h4>
+            <div id="step-formset"> {{ formset_steps.management_form }}
+              {% for step_form in formset_steps %}
+              <div class="step-form d-flex align-items-start mb-2">
+                {{ step_form.id }}
+                <span class="me-2 fw-bold step-number"></span>
+                <div class="flex-grow-1 me-2">
+                  {{ step_form.text.errors }}
+                  {{ step_form.text }}
+                </div>
+                <div class="delete-button-container">
+                {% if formset_steps.can_delete %}
+                <div class="form-check me-2 form-hidden">
+                  {{ step_form.DELETE }}
+                  <label class="form-check-label" for="{{ step_form.DELETE.id_for_label }}">Delete</label>
+                </div>
+                {% if not forloop.first %}
+                <button type="button" class="btn btn-sm btn-outline-danger remove-form mt-1">X</button>
+                {% endif %}
+                {% endif %}
+                </div>
+              </div>
+              {% endfor %}
+            </div>
+            <button type="button" id="add-step" class="btn btn-sm btn-secondary mt-2">+ Add Step</button>
+          </div>
+        </div>
+
+        <div class="recipe-button-section mt-4">
+          <button type="submit" id="save-button" class="btn btn-primary">Save</button>
+          <a id="cancel-button" href="/" class="btn btn-outline-secondary">Cancel</a>
+        </div>
+      </form>
+
+      <div id="ingredient-empty-form" style="display: none;">
+        <div class="ingredient-form d-flex align-items-center mb-2">
+          <div class="flex-grow-1 me-2">
+            <input type="text" name="ingredient_set-__prefix__-name" class="form-control"
+              id="id_ingredient_set-__prefix__-name" placeholder="Enter Ingredient">
+          </div>
+          {% if formset_ingredients.can_delete %}
+          <div class="form-check me-2 form-hidden">
+            <input type="checkbox" name="ingredient_set-__prefix__-DELETE" id="id_ingredient_set-__prefix__-DELETE">
+            <label class="form-check-label" for="id_ingredient_set-__prefix__-DELETE">Delete</label>
+          </div>
+          {% endif %}
+          <button type="button" class="btn btn-sm btn-outline-danger remove-form">X</button>
+        </div>
+      </div>
+
+
+      <div id="tag-empty-form" style="display: none;">
+        <div class="tag-form d-flex align-items-center mb-2">
+          <div class="flex-grow-1 me-2">
+            <input type="text" name="tag_set-__prefix__-tagName" class="form-control" id="id_tag_set-__prefix__-tagName"
+              placeholder="Enter Tag">
+          </div>
+          {% if formset_tags.can_delete %}
+          <div class="form-check me-2 form-hidden">
+            <input type="checkbox" name="tag_set-__prefix__-DELETE" id="id_tag_set-__prefix__-DELETE">
+            <label class="form-check-label" for="id_tag_set-__prefix__-DELETE">Delete</label>
+          </div>
+          {% endif %}
+          <button type="button" class="btn btn-sm btn-outline-danger remove-form">X</button>
+        </div>
+      </div>
+
+
+      <div id="step-empty-form" style="display: none;">
+        <div class="step-form d-flex align-items-start mb-2">
+          <span class="me-2 fw-bold step-number"></span>
+          <div class="flex-grow-1 me-2">
+            <textarea name="step_set-__prefix__-text" cols="40" rows="3" class="form-control"
+              id="id_step_set-__prefix__-text" placeholder="Enter step details"></textarea>
+          </div>
+          {% if formset_steps.can_delete %}
+          <div class="form-check me-2 form-hidden">
+            <input type="checkbox" name="step_set-__prefix__-DELETE" id="id_step_set-__prefix__-DELETE">
+            <label class="form-check-label" for="id_step_set-__prefix__-DELETE">Delete</label>
+          </div>
+          {% endif %}
+          <button type="button" class="btn btn-sm btn-outline-danger remove-form mt-1">X</button>
+        </div>
+      </div>
+
+
+    </main>
+    {% include 'partials/footer.html' %}
+  </div>
+
+</body>
+
+</html>

@@ -1,0 +1,43 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Potluck | Email Sent</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="{% static 'images/pot.ico' %}">
+    <link rel="stylesheet" href="{% static 'css/bootstrap.css' %}">
+    <link rel="stylesheet" href="{% static 'css/potluck.css' %}">
+    <link rel="stylesheet" href="{% static 'css/register_email.css' %}">
+</head>
+
+<body>
+    <div class="wrapper">
+        {% include 'partials/nav.html' %}
+
+        <div class="success-container">
+            <h1>📧 Reset Email Sent</h1>
+            <p>We've sent a password reset link to <strong>{{ email }}</strong>.</p>
+            <p>Please check your inbox and follow the instructions to reset your password.</p>
+
+            <div class="d-flex justify-content-center gap-3 mt-4">
+                <div style="min-width: 180px;">
+                    <a href="{% url 'login' %}" class="btn-custom d-block text-center">Return to Login</a>
+                </div>
+                <div style="min-width: 180px;">
+                    <form method="post" action="{% url 'resend_email_link' %}">
+                        {% csrf_token %}
+                        <input type="hidden" name="email" value="{{ email }}">
+                        <button type="submit" class="btn-custom w-100">Resend Email Link</button>
+                    </form>
+                </div>
+            </div>
+
+        </div>
+
+        {% include 'partials/footer.html' %}
+    </div>
+</body>
+
+</html>
