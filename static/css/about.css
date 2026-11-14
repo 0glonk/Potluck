@@ -1,0 +1,86 @@
+.desktop {
+    display: none;
+}
+
+main{
+    margin-top: 1rem;
+}
+
+.about-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+    padding: 1.5rem;
+    gap: 1rem;
+}
+.about-content p {
+    text-align: left;
+}
+
+.text-heading {
+    width: 100%;
+    margin: 0 auto;
+}
+
+.text-heading h1 {
+    font-size: 2rem;
+    line-height: 1.3;
+}
+
+.about-image img {
+    width: 270px;
+    height: 270px;
+    object-fit: cover;
+    border-radius: 50%;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    margin: 0.5rem auto 2rem;
+}
+
+/* On larger screens, change the order and layout */
+@media (min-width: 768px) {
+    main {
+        display: flex;
+        flex-direction: column;
+        justify-content: space-around;
+        min-height: 100vh;
+    }
+
+    /* Toggle headings for desktop */
+    .desktop {
+        display: block;
+        margin-bottom: 1rem;
+    }
+    .text-heading {
+        display: none;
+    }
+
+    .about-content {
+        flex-direction: column;
+        text-align: left;
+        align-items: stretch;
+    }
+
+    .inner {
+        display: flex;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: center;
+        gap: 4rem;
+        max-width: 1200px;
+        margin: 0 auto;
+    }
+
+    .about-image {
+        flex: 0 0 auto;
+    }
+
+    .text-paragraph {
+        flex: 1;
+        max-width: 700px;
+    }
+
+    .reverse {
+        flex-direction: row-reverse;
+    }
+}

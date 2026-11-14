@@ -1,0 +1,323 @@
+:root {
+    --brown: #6d4c41;
+    --brown2: #795548;
+    --lightBrown: #8d6e63;
+    --darkBrown: #4e3b31;
+    --background: #F8F4E1;
+    --background2: #ebe8d3;
+    --oliveGreen: #606c4c;
+    --oliveGreen2: #7a8768;
+    --wrapperBackground: #b29f94;
+}
+
+body {
+    height: 100%;
+}
+
+.wrapper {
+    background-image: linear-gradient(to bottom right, var(--background), var(--background2));
+    min-height: 100vh;
+    position: relative;
+}
+
+main {
+    padding-bottom: 50px;
+    /* Footer height */
+}
+
+footer {
+    background: var(--brown);
+    height: 50px;
+    position: absolute;
+    bottom: 0;
+    width: 100%;
+    line-height: 50px;
+    overflow: hidden;
+    color: white;
+}
+
+a {
+    color: #a8ba8f;
+    text-decoration: none;
+}
+
+footer a {
+    color: white;
+    text-decoration: none;
+}
+
+footer a:hover {
+    color: var(--background);
+}
+
+.center {
+    text-align: center;
+}
+
+
+/* Nav Bar */
+nav {
+    background-image: linear-gradient(to top, var(--brown2), var(--brown));
+    font-size: 1.25em;
+}
+
+nav.navbar {
+    padding-top: 0.1rem;
+    padding-bottom: 0.1rem;
+}
+
+nav.navbar .navbar-nav .nav-link,
+nav.navbar .navbar-brand,
+.dropdown-menu .dropdown-item {
+    color: white;
+}
+
+nav.navbar .navbar-nav .nav-item:hover>a,
+nav.navbar .navbar-nav .nav-link:hover,
+.dropdown-menu .dropdown-item:hover {
+    color: black;
+}
+
+.nav-link {
+    transition: background-color 0.15s ease-in-out, border-color 0.15s ease-in-out;
+}
+
+.dropdown:has(.show) {
+    background-color: var(--background) !important;
+    border-radius: 15px;
+}
+
+.dropdown:has(.show)>a {
+    color: black !important;
+}
+
+#navLogo {
+    max-width: 130px;
+    min-width: 80px;
+    height: auto;
+    width: 15vw;
+}
+
+.navbar-toggler:focus {
+    border-color: #F8F4E1;
+    border-width: 2px;
+    box-shadow: none;
+}
+
+.navbar-toggler-icon {
+    background-image: url("data:image/svg+xml;charset=utf8,%3Csvg viewBox='0 0 30 30' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath stroke='%23F8F4E1' stroke-width='2' stroke-linecap='round' stroke-miterlimit='10' d='M4 7h22M4 15h22M4 23h22'/%3E%3C/svg%3E");
+}
+
+.nav-item {
+    padding: 0 1em;
+}
+
+.nav-item:hover {
+    background-color: var(--background);
+    border-radius: 15px;
+}
+
+/* Prevents interaction with the page while nav is extended */
+.nav-backdrop {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100vh;
+    background-color: rgba(0, 0, 0, 0.5);
+    z-index: 998;
+    display: none;
+}
+
+.dropdown-menu {
+    background-color: var(--lightBrown);
+}
+
+.dropdown-item:hover {
+    background-color: var(--background);
+}
+
+#navSearchBtn {
+    color: white;
+    border-color: var(--background);
+    border-width: 2px;
+
+    &:hover {
+        color: black;
+        background-color: var(--background);
+    }
+
+    &:focus {
+        color: black;
+        background-color: var(--background);
+    }
+}
+
+/* Recolors bootstrap badge for tags */
+.badge {
+    background-color: var(--lightBrown);
+    color: #FDF8F7;
+    font-weight: 500;
+    font-size: 14px;
+    margin: 10px 0px 0 0;
+  }
+
+  /* --- Star Rating Styles --- */
+.star-rating.read-only {
+    display: inline-block;
+    font-size: 1rem;
+    color: #ccc;
+  }
+  
+  .star-rating.read-only .star {
+    display: inline-block;
+    color: #ccc;
+  }
+  
+  .star-rating.read-only .star.filled {
+    color: #f5c518;
+    /* Golden star color */
+  }
+  
+  /* like and bookmark button styles */
+  .likeButton, .bookmarkButton {
+    background-color: #a4ab86;
+    border: none;
+    cursor: pointer;
+  }
+  .likeButton img, .bookmarkButton img {
+    border-radius: none !important;
+    box-shadow: none !important;
+  }
+
+  .card-body {
+    height: 250px;
+  }
+
+  .hidden {
+    display: none;
+  }
+
+/* adds extra padding to dropdown in nav */
+@media screen and (max-width: 992px) {
+    .navbar-collapse {
+        position: absolute;
+        top: 100%;
+        left: 0;
+        right: 0;
+        max-height: calc(100vh - 56px);
+        /* 56px = approx height of navbar */
+        overflow-y: auto;
+        background: var(--brown2);
+        z-index: 999;
+    }
+
+    .dropdown:has(.show) {
+        padding-bottom: 15px;
+        background-color: transparent !important;
+    }
+
+    .dropdown:hover:has(.show) {
+        background-color: transparent !important;
+    }
+
+    .dropdown:has(.show)>a {
+        color: white !important;
+    }
+
+    nav #navSearch {
+        padding-bottom: 20px;
+        width: 90%;
+        margin: 0 auto;
+    }
+
+    .no-scroll {
+        overflow: hidden;
+        position: relative;
+        height: 100vh;
+    }
+
+    .navbar-collapse {
+        z-index: 999;
+    }
+
+    .d-none {
+        display: none !important;
+    }
+}
+
+/* End Nav Bar */
+
+
+/* Search Bar */
+.searchContainer {
+    justify-content: center;
+    margin: 1em auto;
+    width: 90%;
+}
+
+.searchContainer form {
+    justify-content: center;
+}
+
+#filter {
+    max-width: 150px;
+    margin-left: 1em;
+}
+
+/* End Search Bar */
+
+/* Recipe Card */
+.bd-placeholder-img {
+    font-size: 1.125rem;
+    text-anchor: middle;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    user-select: none;
+}
+
+.card {
+    max-width: 275px;
+    margin: 0 auto;
+    box-shadow: rgba(0, 0, 0, .4) 0 4px 8px !important;
+    transition: transform 0.3s ease;
+}
+
+.card:hover {
+    transform: scale(1.02);
+}
+
+.card-body {
+    background-image: linear-gradient(to bottom, var(--brown), var(--brown2));
+    color: white;
+}
+
+.btn-outline-secondary,
+.btn-outline-secondary:hover,
+.btn-outline-secondary:active,
+.btn-outline-secondary:visited,
+.btn-outline-secondary:focus,
+.btn-outline-secondary:active:focus {
+    background-color: var(--lightBrown);
+    border-color: var(--darkBrown);
+    border-width: 1px;
+    color: black;
+}
+
+small.text-body-secondary {
+    color: white !important;
+}
+
+/* End Recipe Card */
+
+.form-check-input:checked {
+    background-color: var(--oliveGreen);
+    border-color: var(--oliveGreen);
+}
+
+/* Bootstrap override */
+input:focus, textarea:focus {
+    box-shadow: none !important;
+    border-color: #ccc !important;
+    outline: none !important;
+}

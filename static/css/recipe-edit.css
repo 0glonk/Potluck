@@ -1,0 +1,372 @@
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  position: relative;
+  min-height: 100vh;
+}
+
+main {
+  margin-top: 5rem;
+}
+
+#mainRecipeForm {
+  margin: 0rem auto 4rem;
+  width: 90%;
+}
+
+.overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background: rgba(0, 0, 0, 0.6);
+  display: none;
+  z-index: 999;
+}
+
+.center {
+  text-align: center;
+}
+
+#homeTitle {
+  margin: 3em auto 4em;
+  width: 90%;
+}
+
+.time-section {
+  max-width: 200px;
+}
+
+/* --- Formset Styles --- */
+.delete-button-container {
+  /* Reserve space for the button */
+  flex-shrink: 0;
+  width: 30px;
+  height: 30px;
+}
+
+.ingredients-section .flex-grow-1 {
+  width: 100%;
+  max-width: 400px;
+}
+
+.tags-section .flex-grow-1 {
+  width: 100%;
+  max-width: 300px;
+}
+
+.step-form textarea,
+.step-form .flex-grow-1 {
+  width: 100%;
+  max-width: 1300px;
+}
+
+/* Add styles for step numbers */
+.step-number {
+  min-width: 1.5em;
+  /* Ensure space for multi-digit numbers */
+  text-align: right;
+}
+
+/* aligns the button with the field */
+#add-step {
+  margin-left: 2rem;
+}
+
+/* Add the form-hidden class to use for hiding deleted formset forms */
+.form-hidden {
+  display: none !important;
+  /* Use !important to override Bootstrap's .d-flex or other display properties */
+}
+/* --- End Formset Styles --- */
+
+
+.star-rating input[type="radio"] {
+  display: none;
+}
+
+.star-rating label {
+  font-size: 2rem;
+  color: #ccc;
+  cursor: pointer;
+  transition: color 0.2s ease-in-out;
+}
+
+.star-rating input[type="radio"]:checked~label,
+.star-rating label:hover,
+.star-rating label:hover~label {
+  color: #ffc107;
+}
+
+.star-rating {
+  direction: rtl;
+  display: inline-flex;
+  justify-content: flex-end;
+}
+
+.star-rating label {
+  order: 1;
+}
+
+.star-rating label:not(:last-child) {
+  margin-left: 0.25em;
+}
+
+/* Style for the image upload area */
+/* Base styles for small screens */
+.image-section {
+  padding: 0;
+}
+
+.image-section .image-upload-aspect-ratio-wrapper {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  position: relative;
+  /* Needed for absolute positioning of content */
+  padding-top: 0;
+  max-height: none;
+}
+
+#image-crop-container {
+  max-width: 100%;
+  margin: 0 auto; /* Center the container if needed, but remove vertical margin */
+  padding: 0;
+  display: block;
+  height: auto;
+  min-height: 0;
+}
+
+#image-to-crop {
+  display: block; /* Prevents extra space below the image */
+  max-width: 100%;
+  height: auto; /* Maintains aspect ratio */
+}
+
+.image-upload-container label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+}
+
+.image-upload-container .form-control-file {
+  margin-top: 0.5rem;
+}
+
+.image-upload-placeholder {
+  color: #6c757d;
+  margin-bottom: 1rem;
+}
+
+#cropped-preview {
+  display: block; /* Important for proper sizing and to remove potential extra space below */
+  max-width: 100%;
+  height: auto;
+}
+
+#cropped-preview-container {
+   margin-top: 1rem;
+   display: none; /* Keep this as initial state */
+}
+
+.form-control-file::file-selector-button {
+  display: none;
+}
+
+.form-control-file {
+  color: transparent;
+}
+
+/* --- Button Styles --- */
+#save-button,
+#add-ingredient,
+#add-tag,
+#add-step,
+#add-image,
+#crop-button {
+  background-color: var(--oliveGreen);
+  border-color: var(--oliveGreen2);
+
+  &:hover {
+    background-color: var(--oliveGreen2);
+  }
+}
+
+.remove-form,
+#cancel-button {
+  background-color: var(--brown2);
+  border-color: var(--lightBrown);
+  color: white;
+  align-self: center;
+
+  &:hover {
+    background-color: var(--lightBrown);
+    border-color: var(--lightBrown);
+  }
+}
+
+/* --- Custom Layout: Flexbox for Small, Grid for Large --- */
+
+/* Container for the top sections (Title, Image, Difficulty, Time, Ingredients, Tags) */
+/* This will be a flex container on small screens, and a grid container on large screens */
+.recipe-top-sections {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+  margin-bottom: 20px;
+}
+
+/* Ordering for small screens (Title, Image, Difficulty, Time, Ingredients, Tags) */
+.recipe-title-section {
+  order: 1;
+}
+
+.image-section {
+  order: 2;
+}
+
+.difficulty-section {
+  order: 3;
+}
+
+.time-section {
+  order: 4;
+}
+
+.ingredients-section {
+  order: 5;
+}
+
+.tags-section {
+  order: 6;
+}
+
+
+/* Container for Description and Steps (always full width) */
+.recipe-middle-sections {
+  width: 100%;
+  margin-bottom: 20px;
+}
+
+/* Container for Buttons (always full width, centered) */
+.recipe-button-section {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  /* Stack buttons vertically by default on small screens */
+  align-items: center;
+  gap: 15px;
+}
+
+.recipe-button-section .btn {
+  width: 100%;
+  /* Make buttons full width on small screens */
+  max-width: 200px;
+  /* Limit max width for larger mobile screens */
+}
+
+@media (min-width: 992px) {
+
+  /* --- Override Bootstrap Container Max-Width for Wider Form --- */
+  .container {
+    max-width: 1600px;
+  }
+
+  /* --- Grid Layout for Top Sections --- */
+  .recipe-top-sections {
+    display: grid;
+    grid-template-columns: 60% 40%;
+    /* Extra space for iamge */
+    grid-template-rows: auto;
+    /* Row height based on content */
+    gap: 20px 30px;
+    margin-bottom: 20px;
+
+    flex-direction: initial;
+    /* Reset flex direction */
+  }
+
+  /* --- Adjust Widths of Fields in the Left Column --- */
+  /* Constrain the width of the form-section divs in the left column */
+  .recipe-title-section,
+  .difficulty-section {
+    max-width: 500px;
+  }
+
+  /* Ensure delete elements don't shrink */
+  .ingredient-form .form-check,
+  .tag-form .form-check,
+  .step-form .form-check,
+  .ingredient-form .remove-form,
+  .tag-form .remove-form,
+  .step-form .remove-form {
+    flex-shrink: 0;
+  }
+
+  /* Image Upload Section: Row 1, Column 2, Spanning multiple rows */
+  .image-section {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+    /* Spans 5 rows in the 2nd column */
+    overflow: hidden;
+    width: 100%;
+    max-width: 95%;
+    height: auto;
+    min-height: auto;
+  }
+
+  /* --- Existing Grid Item Placement --- */
+  .recipe-title-section {
+    grid-column: 1;
+    grid-row: 1;
+  }
+
+  .difficulty-section {
+    grid-column: 1;
+    grid-row: 2;
+  }
+
+  .time-section {
+    grid-column: 1;
+    grid-row: 3;
+  }
+
+  .ingredients-section {
+    grid-column: 1;
+    grid-row: 4;
+  }
+
+  .tags-section {
+    grid-column: 1;
+    grid-row: 5;
+  }
+
+  .image-section {
+    grid-column: 2;
+    grid-row: 1 / span 5;
+  }
+
+
+  /* Remove Bootstrap's default mb-3 and any other margin-bottom on these grid items on large screens */
+  .recipe-top-sections>div.mb-3 {
+    margin-bottom: 0 !important;
+  }
+
+  .recipe-top-sections>div {
+    margin-bottom: 0;
+  }
+
+
+  .recipe-button-section {
+    flex-direction: row;
+    justify-content: center;
+    gap: 15px;
+  }
+
+  .recipe-button-section .btn {
+    width: auto;
+  }
+}

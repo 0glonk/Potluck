@@ -1,0 +1,61 @@
+.success-container {
+    max-width: 600px;
+    margin: 5rem auto;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}
+
+.success-container h1 {
+    color: var(--oliveGreen);
+    font-size: 2rem;
+}
+
+.success-container p {
+    font-size: 1.1rem;
+    color: var(--oliveGreen2);
+    margin-top: 1rem;
+}
+
+.success-container a.btn-custom {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--oliveGreen);
+    color: white;
+    border-radius: 0.3rem;
+    text-decoration: none;
+}
+
+.success-container a.btn-custom:hover {
+    background-color: var(--oliveGreen2);
+}
+
+.success-container button.btn-custom {
+    margin-top: 1rem;
+    display: inline-block;
+    padding: 0.5rem 1.5rem;
+    background-color: var(--oliveGreen);
+    color: white;
+    border: none;
+    border-radius: 0.3rem;
+    text-decoration: none;
+    font-size: 1rem;
+    cursor: pointer;
+}
+
+.success-container button.btn-custom:hover {
+    background-color: var(--oliveGreen2);
+}
+
+.email-success-container {
+    max-width: 400px;
+    margin: 5rem auto;
+    padding: 2.5rem;
+    border-radius: 1rem;
+    background-color: white;
+    box-shadow: 0 0 20px rgba(0, 0, 0, 0.05);
+    text-align: center;
+}

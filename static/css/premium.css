@@ -1,0 +1,104 @@
+.content-container {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+    width: 90%;
+    max-width: 1963px;
+    margin: 2rem auto;
+    text-align: left;
+    justify-content: space-around;
+  }
+
+  .column {
+    width: 100%;
+    max-width: 800px;
+    align-content: start;
+  }
+  .section-block {
+    margin-bottom: 2em;
+  }
+  .section-block h1 {
+    font-size: 2.3rem;
+    margin-bottom: 1.5rem;;
+  }
+
+  #premiumImg1 {
+    display: none;
+    width: 100%;
+    height: auto;
+    max-width: 1963px;
+    max-height:1030px;
+    margin: 0 auto 4rem;
+    box-shadow: rgba(0, 0, 0, .2) 0 6px 12px;
+  }
+
+  #premiumImg2 {
+    width: 100%;
+    height: auto;
+    margin: 0 auto;
+    display: block;
+    box-shadow: rgba(0, 0, 0, .2) 0 6px 12px;
+  }
+
+  .upgrade-block {
+    margin-top: 3.5em;
+    margin-bottom: 2.5em;
+    text-align: center;
+  }
+
+  #upgrade-button {
+    padding: 0.5em 1em;
+    font-size: 1em;
+    cursor: pointer;
+  }
+
+  #upgrade-button {
+    background-color: var(--oliveGreen);
+    color: white;
+    border: none;
+    border-radius: 1em;
+    padding: 0.8em;
+    margin: .2em 1em 2em;
+    width: 190px;
+    font-size: 1.25em;
+    box-shadow: rgba(0, 0, 0, .2) 0 2px 2px;
+  }
+  #upgrade-button:hover {
+    background-color: var(--oliveGreen2);
+  }
+
+  #promo {
+    margin-top: 5em;
+  }
+
+  #deskSpacer {
+    display: none;
+  }
+
+  @media (min-width: 420px){
+    /*Levels out the two paragraphs */
+    h1{
+        display: flex;
+        align-items: flex-end;
+        height: 88px;
+    }
+  }
+
+  @media (min-width: 500px){
+    #premiumImg1 {
+      display: block;
+    }
+    #premiumImg2 {
+      display: none;
+    }
+  }
+
+  @media (min-width: 890px) {
+    .content-container {
+      flex-direction: row;
+    }
+  
+    .column {
+      width: 50%;
+    }
+  }

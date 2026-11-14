@@ -1,0 +1,46 @@
+main {
+  margin-top: 3em;
+}
+.wrapper {
+  background-image: none !important;
+  background-color: var(--wrapperBackground);
+}
+#colorWrapper {
+  background-color: var(--background);
+  border-radius: 25px;
+}
+
+#recipeContainer {
+  margin: 0rem auto 4rem;
+  width: 90%;
+  padding: 100px 0;
+}
+
+/* --- Recipe Section Styles --- */
+.time-section {
+  max-width: 300px;
+}
+#time > h4, p {
+  display: inline;
+}
+#time > p {
+  font-size: 20px;
+}
+
+.ingredients-section li, #description, #steps li {
+  font-size: 18px;
+}
+
+.image-section img {
+  border-radius: 18px;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.3);
+}
+/* End Recipe Section Styles */
+
+/* Overwrites tag colors for view-page background */
+.badge {
+  background-color: var(--oliveGreen);
+  color: #FDF8F7;
+  font-weight: 600;
+  font-size: 14px;
+}

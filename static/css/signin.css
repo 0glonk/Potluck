@@ -1,0 +1,80 @@
+html,
+body {
+  height: 100%;
+}
+
+.form-signin {
+  max-width: 330px;
+  padding: 1rem;
+}
+
+.form-signin .form-floating:focus-within {
+  z-index: 2;
+}
+
+.form-signin input[type="text"] {
+  margin-bottom: -1px;
+  border-bottom-right-radius: 0;
+  border-bottom-left-radius: 0;
+}
+
+.form-signin #floatingPassword {
+  margin-bottom: 10px;
+  border-top-left-radius: 0;
+  border-top-right-radius: 0;
+}
+
+.form-signin button[type="submit"] {
+  background-color: var(--oliveGreen);
+  border-color: var(--oliveGreen);
+}
+
+.form-signin button[type="submit"]:hover {
+  background-color: var(--oliveGreen2);
+}
+
+.forgot-link {
+  font-size: 0.9rem;
+  color: var(--oliveGreen);
+  text-decoration: none;
+}
+
+.forgot-link:hover {
+  text-decoration: underline;
+  color: var(--oliveGreen2);
+}
+
+.divider-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-top: 1.5rem;
+}
+
+.divider-container .line {
+  flex: 1;
+  height: 1px;
+  background-color: #ddd;
+  margin: 0 10px;
+}
+
+.or-text {
+  font-weight: 600;
+  color: #333;
+}
+
+.signup-prompt {
+  text-align: center;
+  font-size: 0.95rem;
+  margin-top: 1rem;
+}
+
+.signup-link {
+  color: var(--oliveGreen);
+  font-weight: bold;
+  text-decoration: none;
+}
+
+.signup-link:hover {
+  text-decoration: underline;
+}
