@@ -1,0 +1,7 @@
+/bootstrap-5.3.3*
+.venv
+*.pyc
+__pycache__/
+db.sqlite3
+home/aws_settings.py
+home/email_settings.py
